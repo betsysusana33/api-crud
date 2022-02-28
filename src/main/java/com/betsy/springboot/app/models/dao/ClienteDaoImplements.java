@@ -16,29 +16,56 @@ public class ClienteDaoImplements implements InterfazClienteDao {
 	@PersistenceContext
 	private EntityManager em;
 	
+	// Metodo consultar
+	
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly=true)
 	@Override
 	public List<Cliente> findAll() {
 		return em.createQuery("from Cliente").getResultList();
 	}
+	
+	
+	
+	@Override
+	@Transactional(readOnly=true)
+	public Cliente findOne(Long id) {
+		return em.find(Cliente.class, id);
+	}
+
+	
+	//  Metodo insertar
+	//	Metodo editar
 
 	@Override
 	@Transactional
 	public void save(Cliente cliente) {
 		if(cliente.getId() != null && cliente.getId() > 0) {
-			em.merge(cliente);
+			em.merge(cliente);             //editar
 		}else {
-			em.persist(cliente);
+			em.persist(cliente);           //insertar
 		}
 		
 	}
 	
 	
+	//	Metodo eliminar
 
 	@Override
-	public Cliente findOne(Long id) {
-		return em.find(Cliente.class, id);
+	@Transactional
+	public void delete(Long id) {
+		Cliente cliente = findOne(id);
+		em.remove(cliente);
 	}
 
 }
+
+
+
+
+
+
+
+
+
+

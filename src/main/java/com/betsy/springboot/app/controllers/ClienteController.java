@@ -26,12 +26,18 @@ public class ClienteController {
 	@Qualifier("clienteDaoJPA")
 	private InterfazClienteDao clienteDao;
 	
+	
+	//	Metodo de CONSULTAR en la clase controlador
+	
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
 	public String listar(Model model) {
 		model.addAttribute("titulo", "Listado de clientes");
 		model.addAttribute("clientes", clienteDao.findAll());
 		return "listar";
 	}
+	
+	
+	//	Metodo CREAR en la clase controlador
 	
 	@RequestMapping(value="/form") 
 	public String crear( Map<String, Object> model ) {
@@ -41,6 +47,8 @@ public class ClienteController {
 		return "form";
 	}
 	
+	
+	//	Metodo EDITAR clase controlador
 	
 	@RequestMapping(value = "/form/{id}")
 	public String editar(@PathVariable(value = "id") Long id, Map<String, Object> model) {
@@ -71,5 +79,27 @@ public class ClienteController {
 		status.setComplete();
 		return "redirect:listar";
 	}
+	
+	
+	// Metodo ELIMINAR en la clase controlador
+	
+	
+	@RequestMapping(value = "/eliminar/{id}")
+	public String eliminar(@PathVariable(value = "id") Long id) {
+		
+		if (id > 0) {
+			clienteDao.delete(id);
+		}
+		
+		return "redirect:/listar";
+	}
 
 }
+
+
+
+
+
+
+
+
